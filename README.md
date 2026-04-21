@@ -1,93 +1,59 @@
-# Project Design Overview: Software Design
+# REBO - Restaurant Booking System
 
-**Author:** Trương Công Thiên Phú
+## Authors
 
-**Co-Author:** Đặng Quang Hưng
+- Trương Công Thiên Phú
+- Đặng Quang Hưng
 
-**Status:** Draft
+## Introduction
+REBO is a comprehensive digital platform designed to bridge the gap between diners and restaurant owners. By digitizing the entire reservation lifecycle—from discovery and booking to service completion and feedback—REBO ensures transparency, reliability, and operational efficiency for both parties.
 
-**Last Updated:** 2026-01-18
+## 🚀 Vision
+Our vision is to build a simple and trustworthy restaurant booking ecosystem. We solve the common pain points of manual reservation management, such as unclear table availability, hidden surcharges, and the lack of verified customer feedback.
 
----
+## 🛠 Tech Stack
 
-## 1. Executive Summary
-**Objective:**
-Build a scalable [Service Type, e.g., RESTful API / Microservice] that handles [Core Function, e.g., real-time inventory management] to replace the legacy [Old System] and reduce latency by [X]%.
+- **Frontend:** Next.js (TypeScript)
+- **Backend:** Java Spring Boot
+- **Database:** PostgreSQL
+- **Design:** Figma
 
-**Problem Statement:**
-Currently, our system struggles with [Key Pain Point, e.g., high concurrent writes during peak traffic], leading to [Consequence, e.g., data inconsistency].
+## ✨ Key Features
 
-**Success Metrics:**
-* P99 Latency < [e.g., 200ms]
-* Availability: 99.9%
-* Throughput: Handles [X] requests per second (RPS)
+The system supports three primary user roles: **Customers**, **Restaurant Merchants**, and **Administrators**.
 
----
+### 👤 For Customers
+- **Restaurant Discovery:** Search by name, area, or specific dishes.
+- **Real-time Booking:** View table types, capacity, and live availability before selecting a preferred slot.
+- **Transparent Pricing:** Automated calculation of booking fees and surcharges for extra guests.
+- **Secure Payments:** Integrated payment flow to secure reservations.
+- **Feedback Loop:** Submit ratings and reviews after completing a meal.
 
-## 2. System Architecture
+### 🏪 For Restaurant Owners
+- **Merchant Dashboard:** Manage restaurant profiles, operating hours, and location data.
+- **Inventory Management:** Control table categories, seating capacities, and dynamic booking prices.
+- **Digital Menus:** Upload and update dish lists to help customers decide.
+- **Order Management:** Accept, decline, or update the status of incoming reservations.
 
-### 2.1 High-Level Diagram
-> *[Insert Link to Architecture Diagram here]*
+### 🛡️ For Administrators
+- **Merchant Verification:** Review business licenses and approve restaurant registrations.
+- **System Oversight:** Handle complaints, moderate reviews, and manage platform listings.
 
-### 2.2 Tech Stack
-| Component | Technology | Rationale |
-| :--- | :--- | :--- |
-| **Backend** | [e.g., Go / Node.js] | High concurrency support, strictly typed. |
-| **Database** | [e.g., PostgreSQL] | ACID compliance required for transactional data. |
-| **Caching** | [e.g., Redis] | To offload read-heavy traffic for user sessions. |
-| **Infra** | [e.g., AWS / Kubernetes] | Auto-scaling capabilities. |
+## 🔄 Core Business Processes
 
----
+1.  **The Booking Flow:** Users find a restaurant $\rightarrow$ Select table type & time $\rightarrow$ System validates availability $\rightarrow$ User confirms & pays $\rightarrow$ Booking is created.
+2.  **The Service Flow:** Merchant confirms the booking $\rightarrow$ Customer arrives $\rightarrow$ Merchant updates status to "In Service" $\rightarrow$ Merchant marks as "Completed."
+3.  **The Feedback Flow:** Once the service is marked complete, the customer is prompted to leave a rating and review on the restaurant's profile.
 
-## 3. Core Modules & Data Flow
+## 🛡️ Security & Quality (NFRs)
 
-### 3.1 Authentication Module
-* **Mechanism:** JWT (JSON Web Tokens) with OAuth2.
-* **Flow:** `Client` -> `Auth Service` -> `Return Access/Refresh tokens`.
+* **RBAC:** Strict Role-Based Access Control between Users, Merchants, and Admins.
+* **Data Integrity:** Secure storage of personal data and payment logs.
+* **Availability:** Target uptime of 99.5% for reliable booking services.
+* **Audit Logs:** Detailed history tracking for every status change in a booking to prevent disputes.
 
-### 3.2 [Core Feature A]
-* **Description:** Handles the processing of [X].
-* **Key Logic:**
-    1.  Validate input schema.
-    2.  Publish event to `topic-A`.
-    3.  Worker consumes event and updates DB asynchronously.
+## 📈 Roadmap
 
-### 3.3 [Core Feature B]
-* **Description:** Reporting and Analytics.
-* **Key Logic:** Aggregates data via daily Cron jobs using a read-replica DB to avoid locking the primary.
-
----
-
-## 4. API Design (Draft)
-
-**Base URL:** `/api/v1`
-
-* `GET /resources`: List all items (Paginated).
-* `POST /resources`: Create a new item.
-    * *Payload:* `{ "name": "string", "value": int }`
-* `GET /resources/{id}`: Detailed view.
-
----
-
-## 5. Risks & Mitigation
-
-| Risk | Impact | Mitigation Strategy |
-| :--- | :--- | :--- |
-| **Data Migration** | Potential data loss during switchover. | Use double-writing strategy and verify with checksums. |
-| **Latency** | New network hops between microservices. | Implement gRPC for internal communication; aggressive caching. |
-| **Complexity** | Steeper learning curve for new devs. | Comprehensive documentation and containerized dev environments. |
-
----
-
-## 6. Project Timeline
-
-* **Phase 1 (Week 1-2):** Proof of Concept (PoC) & Database Schema Design.
-* **Phase 2 (Week 3-6):** Core API Development & Unit Testing.
-* **Phase 3 (Week 7):** Integration Testing & Load Testing (k6/JMeter).
-* **Phase 4 (Week 8):** Canary Deployment & Monitoring setup.
-
----
-
-## 7. Open Questions
-* *Do we need multi-region support immediately?*
-* *Is the legacy API deprecation date finalized?*
+- **Release 1 (MVP):** Core booking, merchant onboarding, and basic rating system.
+- **Release 2:** Dispute management, advanced search filters, and quick order tracking.
+- **Release 3:** Real-time analytics for merchants and promotional/loyalty features.
